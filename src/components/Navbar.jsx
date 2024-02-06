@@ -1,102 +1,148 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
-import { styles } from "../styles";
-import { navLinks } from "../constants";
-import { logo, menu, close } from "../assets";
+import React, { useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom';
+import { RxCaretRight } from 'react-icons/rx';
+import { logo } from '../assets';
 
-const Navbar = () => {
-  const [active, setActive] = useState("");
-  const [toggle, setToggle] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      if (scrollTop > 100) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+const navlinks = [
+    {
+        name: "Home",
+        href: "/",
+    },
+    {
+        name: "Main Website",
+        href: "https://sci.ngo/",
+    },
+    {
+        name: "2020.sci.ngo",
+        href: "https://2020.sci.ngo/",
+    },
+];
+
+export default function Navbar() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const triggerMenuRef = React.useRef(null);
+    const navbarRef = React.useRef(null);
+
+    const location = useLocation();
+    const pathname = location.pathname;
+
+    const toggleMenu = () => {
+        setIsMenuOpen((prev) => !prev);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    const closeMenu = () => {
+        setIsMenuOpen(false);
+    };
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    useEffect(() => {
+        const closeMenuOnResize = () => {
+            if (window.innerWidth >= 768) {
+                setIsMenuOpen(false);
+            }
+        };
+        window.addEventListener("resize", closeMenuOnResize);
+        return () => window.removeEventListener("resize", closeMenuOnResize);
+    }, []);
 
-  return (
-    <nav
-      className={`${
-        styles.paddingX
-      } w-full flex items-center py-5 fixed top-0 z-20 ${
-        scrolled ? "bg-primary" : "bg-transparent"
-      }`}
-    >
-      <div className='w-full flex justify-between items-center max-w-7xl mx-auto'>
-        <Link
-          to='/'
-          className='flex items-center gap-2'
-          onClick={() => {
-            setActive("");
-            window.scrollTo(0, 0);
-          }}
-        >
-          <img src={logo} alt='logo' className='w-9 h-9 object-contain' />
-          <p className='text-white text-[18px] font-bold cursor-pointer flex '>
-            Adrian &nbsp;
-            <span className='sm:block hidden'> | JavaScript Mastery</span>
-          </p>
-        </Link>
+    useEffect(() => {
+        if (triggerMenuRef.current) {
+            if (isMenuOpen) {
+                triggerMenuRef.current.checked = true;
+            } else {
+                triggerMenuRef.current.checked = false;
+            }
+        }
 
-        <ul className='list-none hidden sm:flex flex-row gap-10'>
-          {navLinks.map((nav) => (
-            <li
-              key={nav.id}
-              className={`${
-                active === nav.title ? "text-white" : "text-secondary"
-              } hover:text-white text-[18px] font-medium cursor-pointer`}
-              onClick={() => setActive(nav.title)}
+        if (isMenuOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "unset";
+        }
+    }, [isMenuOpen]);
+
+    return (
+        <>
+            <nav ref={navbarRef} className={`sticky top-0 z-50 w-screen bg-white md:relative safe-layout`}>
+                {/* <Banner /> */}
+                <div className='flex flex-row items-center justify-between py-6 border-b-2 border-b-gray safe-x-padding'>
+                    <Link className='z-50' href="/" onClick={closeMenu} prefetch={false}>
+                        <div className="w-[40px] h-[50px] lg:w-[72px] lg:h-[70px]">
+                            {/* <BrandIcon /> */}
+                            <img src={logo} alt="My Image" width={90} height={90} />
+                        </div>
+                    </Link>
+                    {/* desktop menu */}
+                    <div className='flex-row items-center justify-between hidden text-lg font-bold md:flex md:gap-6 lg:gap-8'>
+                        <ul className='flex flex-row md:gap-6 lg:gap-8 justify-evenly'>
+                            {navlinks.map((link, index) => (
+                                <li key={index}>
+                                    <Link
+                                        className={`${pathname === link.href ? 'text-accent' : 'text-accent2'
+                                            } p-4`}
+                                        href={link.href}
+                                    >
+                                        {link.name}
+                                    </Link>
+                                </li>
+                            ))}
+
+                        </ul>
+                        {/* <a className='px-6 py-2 text-white gradient-btn rounded-xl' href="/" download="Deri Kurniawan Resume"></a> */}
+                    </div>
+                    {/* mobile hamburger menu */}
+                    <div className="z-50 md:hidden">
+                        <label className="cursor-pointer hamburger">
+                            <input className='hidden' type="checkbox" ref={triggerMenuRef} onClick={toggleMenu} />
+                            <svg viewBox="0 0 32 32" id='hamburger'>
+                                <path className="line line-top-bottom" d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
+                                <path className="line" d="M7 16 27 16"></path>
+                            </svg>
+                        </label>
+                    </div>
+                </div>
+            </nav>
+            {/* mobile menu */}
+            <div
+                className={`${isMenuOpen ? "top-0" : "-translate-y-full"} fixed top-0 w-screen h-screen transition-all duration-500 ease-in-out z-40 bg-white`}
+                style={{ paddingTop: navbarRef.current ? `${navbarRef.current.offsetHeight}px` : '90px' }}
             >
-              <a href={`#${nav.id}`}>{nav.title}</a>
-            </li>
-          ))}
-        </ul>
-
-        <div className='sm:hidden flex flex-1 justify-end items-center'>
-          <img
-            src={toggle ? close : menu}
-            alt='menu'
-            className='w-[28px] h-[28px] object-contain'
-            onClick={() => setToggle(!toggle)}
-          />
-
-          <div
-            className={`${
-              !toggle ? "hidden" : "flex"
-            } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}
-          >
-            <ul className='list-none flex justify-end items-start flex-1 flex-col gap-4'>
-              {navLinks.map((nav) => (
-                <li
-                  key={nav.id}
-                  className={`font-poppins font-medium cursor-pointer text-[16px] ${
-                    active === nav.title ? "text-white" : "text-secondary"
-                  }`}
-                  onClick={() => {
-                    setToggle(!toggle);
-                    setActive(nav.title);
-                  }}
-                >
-                  <a href={`#${nav.id}`}>{nav.title}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </nav>
-  );
-};
-
-export default Navbar;
+                <div className='flex flex-col items-start justify-between p-4 text-lg font-medium lg:hidden lg:gap-8'>
+                    <ul className='w-full'>
+                        {navlinks.map((link, index) => (
+                            <li key={index} className={`flex mb-2 rounded-lg`}>
+                                <Link
+                                    className={`flex-1 py-4 safe-x-padding`}
+                                    href={link.href}
+                                    onClick={closeMenu}
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <span className={`${pathname === link.href ? 'gradient-text' : 'text-accent'} text-2xl font-semibold`}>{link.name}</span>
+                                        <span className={`${pathname === link.href ? 'text-secondary' : ''} text-4xl`}>
+                                            <RxCaretRight />
+                                        </span>
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
+                        {/* <li className="flex text-white rounded-lg gradient-bg">
+                            <a
+                                href="/"
+                                className="flex-1 py-4 safe-x-padding"
+                                download="Deri Kurniawan Resume"
+                            >
+                                <div className="flex items-center justify-between">
+                                    <span className='text-2xl font-semibold'>Resume</span>
+                                    <span className='text-4xl'>
+                                        <BsFileEarmarkPerson />
+                                    </span>
+                                </div>
+                            </a>
+                        </li> */}
+                    </ul>
+                </div>
+            </div>
+        </>
+    );
+}

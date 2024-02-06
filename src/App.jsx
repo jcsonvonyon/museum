@@ -1,26 +1,20 @@
-import { BrowserRouter } from "react-router-dom";
-
-import { About, Contact, Experience, Feedbacks, Hero, Navbar, Tech, Works, StarsCanvas } from "./components";
+import {BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Landing from "./landing";
+import Section1 from "./section1";
+import Section2 from "./section2";
+import Section3 from "./section3";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <div className='relative z-0 bg-primary'>
-        <div className='bg-hero-pattern bg-cover bg-no-repeat bg-center'>
-          <Navbar />
-          <Hero />
-        </div>
-        <About />
-        <Experience />
-        <Tech />
-        <Works />
-        <Feedbacks />
-        <div className='relative z-0'>
-          <Contact />
-          <StarsCanvas />
-        </div>
-      </div>
-    </BrowserRouter>
+    <Router>
+       <Routes>
+        <Route exact path='/' element={<Landing/>} />
+        <Route exact path='/section1' element={<Section1/>} />
+        <Route exact path='/section2' element={<Section2/>} />
+        <Route exact path='/section3' element={<Section3/>} />
+       </Routes>
+       
+    </Router>
   );
 }
 
