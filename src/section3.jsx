@@ -1,10 +1,19 @@
-
+import React from 'react'
+import { Contact, Hero, StarsCanvas, Works3 } from './components'
 
 const Section3 = () => {
   return (
-    <div>Section3
-      <p className="text-white text-4xl">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam tellus. Sed non semper nunc.</p>
-    </div>
+    <div className='relative z-0 bg-primary'>
+       <div className='bg-hero-pattern bg-cover bg-no-repeat bg-center'>
+           <Hero />
+         </div>
+         <StarsCanvas />
+         <Works3/>
+         <div className='relative z-0'>
+           <Contact />
+           <StarsCanvas />
+         </div>
+       </div>
   )
 }
 

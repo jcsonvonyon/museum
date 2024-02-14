@@ -1,5 +1,5 @@
 import React from "react";
-import { Hero, StarsCanvas, Works } from "./components";
+import { Contact, Hero, StarsCanvas, Works } from "./components";
 import "./index.css";
 
 const Section1 = () => {
@@ -8,9 +8,9 @@ const Section1 = () => {
       <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
         <Hero />
       </div>
-      <StarsCanvas />
-      <Works />
+        <Works />
       <div className="relative z-0">
+        <Contact />
         <StarsCanvas />
       </div>
     </div>

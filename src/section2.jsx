@@ -1,5 +1,5 @@
 import React from 'react'
-import { Contact, Hero, StarsCanvas, Works } from './components'
+import { Contact, Hero, StarsCanvas, Works2 } from './components'
 
 const Section2 = () => {
   return (
@@ -8,10 +8,7 @@ const Section2 = () => {
            <Hero />
          </div>
          <StarsCanvas />
-         {/* <About />
-         <Tech /> */}
-         <Works />
-         {/* <Feedbacks /> */}
+         <Works2/>
          <div className='relative z-0'>
            <Contact />
            <StarsCanvas />

@@ -5,9 +5,10 @@ import { styles } from "../styles";
 import { EarthCanvas } from "./canvas";
 import { SectionWrapper } from "../hoc";
 import { slideIn } from "../utils/motion";
+import { Link } from 'react-router-dom';
 
 const Contact = () => {
-  
+ 
   return (
     <div
       className={`xl:mt-12 flex xl:flex-row flex-col-reverse gap-10 overflow-hidden`}
@@ -20,10 +21,11 @@ const Contact = () => {
         {/* <h3 className={styles.sectionSubText}>Contact.</h3> */}
 
 
-       <div className="flex  justify-between mt-10">
-         <button className="text-black font-bold bg-slate-100 rounded-lg p-2">{"<"}--SECTION 1</button>
-         <button className="text-black font-bold bg-slate-100 rounded-lg p-2">SECTION 3--{">"}</button>
-       </div>
+        <div className="flex justify-between mt-10">
+        <Link to="/section1" className="text-black font-bold bg-slate-100 rounded-lg p-2">SECTION 1</Link>
+        <Link to="/section2" className="text-black font-bold bg-slate-100 rounded-lg p-2">SECTION 2</Link>
+        <Link to="/section3" className="text-black font-bold bg-slate-100 rounded-lg p-2">SECTION 3</Link>
+      </div>
 
      
       </motion.div>
